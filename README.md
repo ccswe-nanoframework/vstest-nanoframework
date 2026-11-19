@@ -106,7 +106,8 @@ To point a major tag at another release by hand (e.g. a rollback), run the
 1. Branch `release/v1` from `v1.0.18` and add `release/**` to the branch filters
    in `ci.yml`.
 2. Fix, build, and push the tag `v1.0.19` on that branch (`v*` tags can only be
-   created by org admins and the release workflow, which releases `master` only).
+   created by org admins and the release workflow, which releases `master`
+   only).
 3. Create the release with
    `gh release create v1.0.19 --generate-notes --notes-start-tag v1.0.18 --latest=false`
    so v2 stays "Latest".
