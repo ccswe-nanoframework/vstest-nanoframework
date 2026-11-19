@@ -1,22 +1,31 @@
 name: Release
+run-name: Release (${{ inputs.bump }})
+
+# Cuts the next vX.Y.Z from master, creates the GitHub Release and moves the major
+# tag (ccswe-apps/actions release-tag.yml; README "Releasing").
 
 on:
-  push:
-    tags:
-      # Two-dot shape: matches v2.0.0 and v2.0.0-beta.1; excludes the bare
-      # major tag (v2) so moving it does not re-trigger this workflow.
-      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Semver bump
+        type: choice
+        options: [patch, minor, major]
+        required: true
 
 permissions:
-  contents: write
+  contents: read
+  checks: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 
 jobs:
   release:
-    uses: ccswe-apps/actions/.github/workflows/npm-release-action.yml@master
+    uses: ccswe-apps/actions/.github/workflows/release-tag.yml@v1
+    with:
+      bump: ${{ inputs.bump }}
     secrets:
       AUTOMATION_APP_ID: ${{ secrets.AUTOMATION_APP_ID }}
       AUTOMATION_APP_KEY: ${{ secrets.AUTOMATION_APP_KEY }}

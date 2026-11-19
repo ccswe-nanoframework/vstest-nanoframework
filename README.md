@@ -14,9 +14,9 @@ composites:
 ```yaml
 - uses: actions/checkout@v7
 
-- uses: ccswe-apps/actions/.github/actions/setup-nanoframework@master
+- uses: ccswe-apps/actions/.github/actions/setup-nanoframework@v1
 
-- uses: ccswe-apps/actions/.github/actions/build-nanoframework@master
+- uses: ccswe-apps/actions/.github/actions/build-nanoframework@v1
   with:
     solution: MySolution.sln
 ```
@@ -84,22 +84,16 @@ v1 is frozen at v1.0.18 (critical fixes only).
 
 ## Releasing
 
-Releases are tag-driven:
+Releases are cut by dispatch from `master`:
 
-1. Make sure `master` is green and `dist/` is committed and up to date
-   (`npm run build` produces no diff — CI enforces this).
-2. Create and push a `vMAJOR.MINOR.PATCH` tag from `master`:
-
-   ```bash
-   git tag vX.Y.Z
-   git push origin vX.Y.Z
-   ```
+```bash
+gh workflow run release.yml -f bump=<patch|minor|major>
+```
 
 The [`Release`](.github/workflows/release.yml) workflow (ccswe-apps/actions
-`npm-release-action.yml`) re-runs format/lint/test, re-verifies `dist/`, creates
-a GitHub Release with generated notes, and moves the major tag (`vN`) to the new
-release. A tag with a hyphen (e.g. `v2.1.0-beta.1`) is a pre-release and doesn't
-move the major tag.
+`release-tag.yml`) checks that every required check passed on `master`'s head
+(CI there already verified `dist/`), tags the next `vX.Y.Z`, creates a GitHub
+Release with generated notes, and moves the major tag (`vN`) to it.
 
 Runtime dependency fixes (including Dependabot security updates) are bundled
 into `dist/`, so they only reach consumers once released.
@@ -111,8 +105,9 @@ To point a major tag at another release by hand (e.g. a rollback), run the
 
 1. Branch `release/v1` from `v1.0.18` and add `release/**` to the branch filters
    in `ci.yml`.
-2. Fix, build, and tag `v1.0.19` on that branch. The release workflow requires
-   tags on `master`, so its run fails for this tag; release by hand instead.
+2. Fix, build, and push the tag `v1.0.19` on that branch (`v*` tags can only be
+   created by org admins and the release workflow, which releases `master`
+   only).
 3. Create the release with
    `gh release create v1.0.19 --generate-notes --notes-start-tag v1.0.18 --latest=false`
    so v2 stays "Latest".
