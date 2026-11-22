@@ -147330,7 +147330,7 @@ async function run() {
             info(`${group.name}: ${group.assemblies.length} assembly(ies), settings ${group.runSettings}`);
         }
         const vsTestPath = (await getVsTestPath()) || (await downloadTestTools());
-        info(`Using ${vsTestPath}`);
+        info(`Using vstest at ${vsTestPath}`);
         const resultsDirectory = inputs.resultsDirectory ||
             join(process.env['RUNNER_TEMP'] ?? '.', 'vstest-nanoframework');
         await rmRF(resultsDirectory);
