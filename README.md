@@ -84,7 +84,8 @@ v1 is frozen at v1.0.18 (critical fixes only).
 
 ## Contributing
 
-The bundled action in `dist/` is committed. After changing `src/`, rebuild it with the Node version in `.nvmrc` and commit `dist/` with your change:
+The bundled action in `dist/` is committed. After changing `src/`, rebuild it
+with the Node version in `.nvmrc` and commit `dist/` with your change:
 
 ```bash
 nvm use
@@ -92,13 +93,17 @@ npm ci
 npm run build   # npm run all also formats, lints and tests
 ```
 
-`pipeline / build` fails while `dist/` is out of date. Its error and run summary give the rebuild command, and the run uploads the expected `dist/` as artifact `committed-output`, which you can commit instead (needs a logged-in `gh`):
+`pipeline / build` fails while `dist/` is out of date. Its error and run summary
+give the rebuild command, and the run uploads the expected `dist/` as artifact
+`committed-output`, which you can commit instead (needs a logged-in `gh`):
 
 ```bash
 rm -rf dist && gh run download <run-id> -R ccswe-nanoframework/vstest-nanoframework -n committed-output -D dist
 ```
 
-Dependabot PRs get `dist/` rebuilt automatically, and maintainers can run `gh workflow run rebuild-dist.yml --ref <branch>` on branches in this repository. Pull requests from forks must include the rebuilt `dist/`.
+Dependabot PRs get `dist/` rebuilt automatically, and maintainers can run
+`gh workflow run rebuild-dist.yml --ref <branch>` on branches in this
+repository. Pull requests from forks must include the rebuilt `dist/`.
 
 ## Releasing
 
