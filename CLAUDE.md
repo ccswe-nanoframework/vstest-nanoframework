@@ -59,7 +59,9 @@ Unit tests build temporary fixture trees with `__tests__/helpers/fixture.ts`.
 changes to source files — `pipeline / build` (ccswe-apps/actions
 `npm-build-action.yml`) fails the PR if `dist/` is out of sync.
 `rebuild-dist.yml` rebuilds and commits `dist/` automatically on Dependabot PRs
-and on demand (`workflow_dispatch`) for any other branch.
+and on demand (`workflow_dispatch`) for any other branch in this repo. It can't push
+to fork PRs; for those, the failing build uploads the expected `dist/` as artifact
+`committed-output` (README → Contributing).
 
 **Releases**: see README → Releasing. `v1` is frozen at v1.0.18.
 
