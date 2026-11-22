@@ -48,7 +48,7 @@ export async function run(): Promise<void> {
 
     const vsTestPath =
       (await vstest.getVsTestPath()) || (await vstest.downloadTestTools())
-    core.info(`Using ${vsTestPath}`)
+    core.info(`Using vstest at ${vsTestPath}`)
 
     const resultsDirectory =
       inputs.resultsDirectory ||
